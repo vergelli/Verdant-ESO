@@ -1,0 +1,185 @@
+<GuiXml>
+  <Controls>
+
+    <TopLevelControl name="VerdantAssignPanel"
+                     hidden="true"
+                     tier="HIGH"
+                     clampedToScreen="true"
+                     movable="true"
+                     mouseEnabled="true">
+
+      <Dimensions x="380" y="380"/>
+
+      <OnMoveStop>Verdant.Window.Assign.on_move_stop()</OnMoveStop>
+
+      <Controls>
+
+        <Backdrop name="$(parent)Bg">
+          <AnchorFill/>
+        </Backdrop>
+
+        <!-- ── title bar ───────────────────────────────────────────────── -->
+        <Label name="$(parent)WindowTitle"
+               font="ZoFontWindowTitle"
+               horizontalAlignment="LEFT"
+               verticalAlignment="CENTER">
+          <Anchor point="TOPLEFT" offsetX="14" offsetY="10"/>
+          <Dimensions y="18"/>
+        </Label>
+
+        <Button name="$(parent)CloseBtn" mouseEnabled="true"
+                mouseOverBlendMode="ADD" inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-8" offsetY="8"/>
+          <Dimensions x="16" y="16"/>
+          <OnClicked>Verdant.Window.Assign.on_close_click()</OnClicked>
+        </Button>
+
+        <!-- ── help blurb ──────────────────────────────────────────────── -->
+        <Label name="$(parent)HelpLabel"
+               font="ZoFontGameSmall"
+               horizontalAlignment="LEFT"
+               verticalAlignment="TOP">
+          <Anchor point="TOPLEFT"  offsetX="14" offsetY="36"/>
+          <Anchor point="TOPRIGHT" offsetX="-14" offsetY="36"/>
+          <Dimensions y="28"/>
+        </Label>
+
+        <!-- ── list region (rows built in Lua) ─────────────────────────── -->
+        <Control name="$(parent)List" mouseEnabled="false">
+          <Anchor point="TOPLEFT"     offsetX="14"  offsetY="68"/>
+          <Anchor point="BOTTOMRIGHT" offsetX="-14" offsetY="-44"/>
+
+          <Controls>
+            <Label name="$(parent)Empty"
+                   font="ZoFontGame"
+                   horizontalAlignment="CENTER"
+                   verticalAlignment="CENTER">
+              <AnchorFill/>
+            </Label>
+          </Controls>
+        </Control>
+
+        <!-- ── Assign (persist-on-pick already done; this closes) ───────── -->
+        <Button name="$(parent)AssignBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="BOTTOMLEFT"  offsetX="14"  offsetY="-12"/>
+          <Anchor point="BOTTOMRIGHT" offsetX="-14" offsetY="-12"/>
+          <Dimensions y="22"/>
+          <OnClicked>Verdant.Window.Assign.on_assign_click()</OnClicked>
+        </Button>
+
+        <Control name="$(parent)NewCat" hidden="true" mouseEnabled="true">
+          <Anchor point="BOTTOMLEFT"  offsetX="14"  offsetY="-44"/>
+          <Anchor point="BOTTOMRIGHT" offsetX="-14" offsetY="-44"/>
+          <Dimensions y="92"/>
+          <Controls>
+            <Backdrop name="$(parent)Bg">
+              <AnchorFill/>
+              <Edge file="EsoUI/Art/Tooltips/UI-Border.dds"
+                    edgeFileWidth="128" edgeFileHeight="16" edgeSize="6"/>
+              <Center file="EsoUI/Art/Tooltips/UI-TooltipCenter.dds"/>
+              <Insets left="4" top="4" right="-4" bottom="-4"/>
+            </Backdrop>
+            <Label name="$(parent)Title" font="ZoFontGameSmall"
+                   horizontalAlignment="LEFT" verticalAlignment="CENTER">
+              <Anchor point="TOPLEFT" offsetX="10" offsetY="8"/>
+              <Dimensions x="90" y="22"/>
+            </Label>
+            <Backdrop name="$(parent)NameBox" inherits="ZO_EditBackdrop">
+              <Anchor point="TOPLEFT" offsetX="100" offsetY="7"/>
+              <Dimensions x="118" y="24"/>
+              <Controls>
+                <EditBox name="$(parent)Edit" inherits="ZO_DefaultEditForBackdrop" maxInputCharacters="18"/>
+              </Controls>
+            </Backdrop>
+            <Button name="$(parent)CreateBtn" mouseEnabled="true" font="ZoFontGameSmall" inherits="ZO_DefaultButton">
+              <Anchor point="TOPRIGHT" offsetX="-72" offsetY="8"/>
+              <Dimensions x="58" y="22"/>
+              <OnClicked>Verdant.Window.Assign.on_newcat_create()</OnClicked>
+            </Button>
+            <Button name="$(parent)CancelBtn" mouseEnabled="true" font="ZoFontGameSmall" inherits="ZO_DefaultButton">
+              <Anchor point="TOPRIGHT" offsetX="-10" offsetY="8"/>
+              <Dimensions x="58" y="22"/>
+              <OnClicked>Verdant.Window.Assign.on_newcat_cancel()</OnClicked>
+            </Button>
+          </Controls>
+        </Control>
+
+        <!-- ── category flyout (populated in Lua; LAST = draws on top) ──── -->
+        <Control name="$(parent)Flyout" hidden="true" mouseEnabled="true">
+          <Dimensions x="200" y="100"/>
+          <Controls>
+            <Texture name="$(parent)Fill">
+              <AnchorFill/>
+            </Texture>
+            <Backdrop name="$(parent)Bg">
+              <AnchorFill/>
+              <Edge file="EsoUI/Art/Tooltips/UI-Border.dds"
+                    edgeFileWidth="128" edgeFileHeight="16" edgeSize="6"/>
+              <Insets left="4" top="4" right="-4" bottom="-4"/>
+            </Backdrop>
+          </Controls>
+        </Control>
+
+      </Controls>
+    </TopLevelControl>
+
+    <!--
+      Confirm dialog — a SEPARATE top-level window, centered on screen. The
+      assignment window is hidden while it's up (mirror of Settings→Assign), so
+      the two never overlap. Lists each staged pick "ability → category" for
+      review before committing.
+    -->
+    <TopLevelControl name="VerdantAssignConfirm"
+                     hidden="true"
+                     tier="HIGH"
+                     clampedToScreen="true"
+                     mouseEnabled="true">
+      <Dimensions x="420" y="220"/>
+      <Anchor point="CENTER" relativeTo="GuiRoot" relativePoint="CENTER"/>
+
+      <Controls>
+        <Backdrop name="$(parent)Bg">
+          <AnchorFill/>
+        </Backdrop>
+
+        <Label name="$(parent)Title"
+               font="ZoFontWindowTitle"
+               horizontalAlignment="LEFT"
+               verticalAlignment="CENTER">
+          <Anchor point="TOPLEFT" offsetX="16" offsetY="14"/>
+          <Dimensions y="18"/>
+        </Label>
+
+        <Label name="$(parent)Msg"
+               font="ZoFontGame"
+               horizontalAlignment="LEFT"
+               verticalAlignment="TOP">
+          <Anchor point="TOPLEFT"     offsetX="16"  offsetY="44"/>
+          <Anchor point="BOTTOMRIGHT" offsetX="-16" offsetY="-44"/>
+        </Label>
+
+        <Button name="$(parent)NoBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="BOTTOMLEFT" offsetX="16" offsetY="-12"/>
+          <Dimensions x="152" y="24"/>
+          <OnClicked>Verdant.Window.Assign.on_confirm_no()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)YesBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="BOTTOMRIGHT" offsetX="-16" offsetY="-12"/>
+          <Dimensions x="152" y="24"/>
+          <OnClicked>Verdant.Window.Assign.on_confirm_yes()</OnClicked>
+        </Button>
+      </Controls>
+    </TopLevelControl>
+
+  </Controls>
+</GuiXml>

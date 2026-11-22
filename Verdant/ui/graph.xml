@@ -1,0 +1,320 @@
+<GuiXml>
+  <Controls>
+
+    <!--
+      Two-layer architecture:
+      - Outer container (this TopLevelControl): movable/resizable window with
+        its own backdrop, holds the chrome (title, record/stop/flush buttons,
+        view navigation).
+      - Inner viewport (Viewport sub-control): a separate Control with its own
+        Backdrop, hosts only the graph canvases.  The viewport sits inside the
+        container with generous margins, producing the embedded/contained look.
+    -->
+    <TopLevelControl name="VerdantGraphWindow"
+                     hidden="true"
+                     clampedToScreen="true"
+                     movable="true"
+                     mouseEnabled="true"
+                     resizeHandleSize="8">
+
+      <Dimensions x="718" y="472"/>
+      <OnMouseDoubleClick>Verdant.Window.Graph.on_title_double_click()</OnMouseDoubleClick>
+      <OnMoveStart>Verdant.Window.Graph.on_move_start()</OnMoveStart>
+      <OnMoveStop>Verdant.Window.Graph.on_move_stop()</OnMoveStop>
+      <OnResizeStart>Verdant.Window.Graph.on_resize_start()</OnResizeStart>
+      <OnResizeStop>Verdant.Window.Graph.on_resize_stop()</OnResizeStop>
+
+      <Controls>
+
+        <Backdrop name="$(parent)Bg">
+          <AnchorFill/>
+        </Backdrop>
+
+        <Texture name="$(parent)ChromeTop" addressMode="WRAP" autoAdjustTextureCoords="false">
+          <Anchor point="TOPLEFT"     relativeTo="$(parent)" relativePoint="TOPLEFT"  offsetX="2"  offsetY="2"/>
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="TOPRIGHT" offsetX="-2" offsetY="100"/>
+        </Texture>
+
+        <Texture name="$(parent)ChromeBottom" addressMode="WRAP" autoAdjustTextureCoords="false">
+          <Anchor point="TOPLEFT"     relativeTo="$(parent)" relativePoint="BOTTOMLEFT"  offsetX="2"  offsetY="-14"/>
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="-2" offsetY="-2"/>
+        </Texture>
+
+        <Texture name="$(parent)ChromeLeft" addressMode="WRAP" autoAdjustTextureCoords="false">
+          <Anchor point="TOPLEFT"     relativeTo="$(parent)" relativePoint="TOPLEFT"    offsetX="2"  offsetY="100"/>
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="14" offsetY="-14"/>
+        </Texture>
+
+        <Texture name="$(parent)ChromeRight" addressMode="WRAP" autoAdjustTextureCoords="false">
+          <Anchor point="TOPLEFT"     relativeTo="$(parent)" relativePoint="TOPRIGHT"    offsetX="-14" offsetY="100"/>
+          <Anchor point="BOTTOMRIGHT" relativeTo="$(parent)" relativePoint="BOTTOMRIGHT" offsetX="-2"  offsetY="-14"/>
+        </Texture>
+
+        <Texture name="$(parent)BrandLogo" textureFile="Verdant/assets/logo.dds">
+          <Anchor point="TOPLEFT" offsetX="12" offsetY="6"/>
+          <Dimensions x="26" y="26"/>
+        </Texture>
+
+        <Button name="$(parent)SettingsBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPRIGHT" offsetX="-34" offsetY="7"/>
+          <Dimensions x="64" y="22"/>
+          <OnClicked>Verdant.Window.Settings.toggle()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)AboutBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPRIGHT" offsetX="-102" offsetY="7"/>
+          <Dimensions x="48" y="22"/>
+          <OnClicked>Verdant.Window.About.toggle()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)CloseBtn"
+                mouseEnabled="true"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-8" offsetY="7"/>
+          <Dimensions x="22" y="22"/>
+          <OnClicked>Verdant.Window.Graph.on_close_click()</OnClicked>
+        </Button>
+
+        <!-- Controls row: Start / Stop / Flush text buttons (ZO_DefaultButton
+             frame, same style as the bar's %/# toggle).  Status label and
+             view navigation sit on the same row. -->
+        <Button name="$(parent)RecordBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPLEFT" offsetX="14" offsetY="33"/>
+          <Dimensions x="72" y="24"/>
+          <OnClicked>Verdant.Window.Graph.on_record_main_click()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)RecordMenuBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPLEFT" offsetX="86" offsetY="33"/>
+          <Dimensions x="20" y="24"/>
+          <OnClicked>Verdant.Window.Graph.on_record_menu_click()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)StopBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPLEFT" offsetX="112" offsetY="34"/>
+          <Dimensions x="56" y="22"/>
+          <OnClicked>Verdant.Window.Graph.on_stop_click()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)FlushBtn"
+                mouseEnabled="true"
+                font="ZoFontGameSmall"
+                inherits="ZO_DefaultButton">
+          <Anchor point="TOPLEFT" offsetX="174" offsetY="34"/>
+          <Dimensions x="56" y="22"/>
+          <OnClicked>Verdant.Window.Graph.on_flush_click()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)LibBtn"
+                mouseEnabled="true"
+                mouseOverBlendMode="ADD"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPLEFT" offsetX="236" offsetY="31"/>
+          <Dimensions x="28" y="28"/>
+          <OnClicked>Verdant.Window.Library.toggle()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)SaveBtn"
+                mouseEnabled="true"
+                mouseOverBlendMode="ADD"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPLEFT" offsetX="268" offsetY="31"/>
+          <Dimensions x="28" y="28"/>
+          <OnClicked>Verdant.Window.Graph.on_save_click()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)PrevSessBtn"
+                mouseEnabled="true"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPLEFT" offsetX="302" offsetY="35"/>
+          <Dimensions x="20" y="20"/>
+          <OnClicked>Verdant.Window.Graph.step_session(-1)</OnClicked>
+        </Button>
+
+        <Button name="$(parent)NextSessBtn"
+                mouseEnabled="true"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPLEFT" offsetX="324" offsetY="35"/>
+          <Dimensions x="20" y="20"/>
+          <OnClicked>Verdant.Window.Graph.step_session(1)</OnClicked>
+        </Button>
+
+        <Button name="$(parent)SayBtn"
+                mouseEnabled="true"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-9" offsetY="35"/>
+          <Dimensions x="20" y="20"/>
+          <OnClicked>Verdant.Window.Say.post()</OnClicked>
+        </Button>
+
+        <Button name="$(parent)ExportBtn"
+                mouseEnabled="true"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-34" offsetY="35"/>
+          <Dimensions x="20" y="20"/>
+          <OnClicked>Verdant.Window.Export.open()</OnClicked>
+        </Button>
+
+        <!-- StatusLabel spans the gap between Save and the view nav so it
+             contracts gracefully at the minimum window width. -->
+        <Label name="$(parent)StatusLabel"
+               font="ZoFontGameSmall"
+               horizontalAlignment="LEFT"
+               verticalAlignment="CENTER">
+          <Anchor point="TOPLEFT"  offsetX="350"  offsetY="38"/>
+          <Dimensions y="14"/>
+        </Label>
+
+        <Label name="$(parent)RecModeLabel"
+               font="ZoFontGameSmall"
+               horizontalAlignment="LEFT"
+               verticalAlignment="CENTER">
+          <Anchor point="LEFT" relativeTo="$(parent)StatusLabel" relativePoint="RIGHT" offsetX="10" offsetY="0"/>
+          <Anchor point="RIGHT" relativePoint="TOPRIGHT" offsetX="-60" offsetY="45"/>
+          <Dimensions y="14"/>
+        </Label>
+
+        <!-- View navigation: [<<] [EMS] [>] -->
+        <Button name="$(parent)PrevViewBtn"
+                hidden="true"
+                mouseEnabled="true"
+                mouseOverBlendMode="ADD"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-76" offsetY="33"/>
+          <Dimensions x="24" y="24"/>
+          <Textures normal="EsoUI/Art/Buttons/large_leftdoublearrow_up.dds"
+                    pressed="EsoUI/Art/Buttons/large_leftdoublearrow_down.dds"
+                    mouseOver="EsoUI/Art/Buttons/large_leftdoublearrow_over.dds"/>
+          <OnClicked>Verdant.Window.Graph.prev_view()</OnClicked>
+        </Button>
+
+        <Label name="$(parent)ViewLabel"
+               hidden="true"
+               font="ZoFontGameSmall"
+               horizontalAlignment="CENTER"
+               verticalAlignment="CENTER">
+          <Anchor point="TOPRIGHT" offsetX="-36" offsetY="38"/>
+          <Dimensions x="36" y="14"/>
+        </Label>
+
+        <Button name="$(parent)NextViewBtn"
+                hidden="true"
+                mouseEnabled="true"
+                mouseOverBlendMode="ADD"
+                inherits="ZO_ButtonBehaviorClickSound">
+          <Anchor point="TOPRIGHT" offsetX="-8" offsetY="33"/>
+          <Dimensions x="24" y="24"/>
+          <Textures normal="EsoUI/Art/Buttons/large_rightarrow_up.dds"
+                    pressed="EsoUI/Art/Buttons/large_rightarrow_down.dds"
+                    mouseOver="EsoUI/Art/Buttons/large_rightarrow_over.dds"/>
+          <OnClicked>Verdant.Window.Graph.next_view()</OnClicked>
+        </Button>
+
+        <Control name="$(parent)Tabs" mouseEnabled="false">
+          <Anchor point="TOPLEFT"  offsetX="20"  offsetY="76"/>
+          <Anchor point="TOPRIGHT" offsetX="-20" offsetY="76"/>
+          <Dimensions y="24"/>
+        </Control>
+
+        <!-- ── Inner viewport: tighter padding, less chrome presence ────── -->
+        <Control name="$(parent)Viewport" mouseEnabled="false">
+          <Anchor point="TOPLEFT"     offsetX="14"  offsetY="100"/>
+          <Anchor point="BOTTOMRIGHT" offsetX="-14" offsetY="-14"/>
+
+          <Controls>
+
+            <!-- Inner backdrop: nested inside the outer one for an
+                 embedded/inset look ("frame within frame"). -->
+            <Backdrop name="$(parent)Bg">
+              <AnchorFill/>
+              <Center file="EsoUI/Art/Tooltips/UI-TooltipCenter.dds"/>
+              <Insets left="4" top="4" right="-4" bottom="-4"/>
+            </Backdrop>
+
+            <Control name="$(parent)Canvas" mouseEnabled="false">
+              <Anchor point="TOPLEFT"     offsetX="6"  offsetY="6"/>
+              <Anchor point="BOTTOMRIGHT" offsetX="-6" offsetY="-6"/>
+            </Control>
+
+            <Label name="$(parent)NoDataLabel"
+                   font="ZoFontGameSmall"
+                   horizontalAlignment="CENTER"
+                   verticalAlignment="CENTER">
+              <AnchorFill/>
+            </Label>
+
+          </Controls>
+        </Control>
+
+        <Control name="$(parent)Welcome" hidden="true">
+          <Dimensions x="380" y="216"/>
+          <Anchor point="CENTER"/>
+          <Controls>
+
+            <Backdrop name="$(parent)Bg">
+              <AnchorFill/>
+            </Backdrop>
+
+            <Texture name="$(parent)Logo" textureFile="Verdant/assets/logo.dds">
+              <Anchor point="TOP" offsetY="14"/>
+              <Dimensions x="32" y="32"/>
+            </Texture>
+
+            <Label name="$(parent)Title"
+                   font="ZoFontWindowTitle"
+                   horizontalAlignment="CENTER"
+                   verticalAlignment="CENTER">
+              <Anchor point="TOP" offsetY="48"/>
+              <Dimensions x="340" y="20"/>
+            </Label>
+
+            <Label name="$(parent)Body"
+                   font="ZoFontGameSmall"
+                   horizontalAlignment="CENTER"
+                   verticalAlignment="TOP">
+              <Anchor point="TOPLEFT"  offsetX="20"  offsetY="76"/>
+              <Anchor point="TOPRIGHT" offsetX="-20" offsetY="76"/>
+              <Dimensions y="96"/>
+            </Label>
+
+            <Button name="$(parent)OkBtn"
+                    mouseEnabled="true"
+                    font="ZoFontGameSmall"
+                    inherits="ZO_DefaultButton">
+              <Anchor point="BOTTOM" offsetY="-12"/>
+              <Dimensions x="140" y="24"/>
+              <OnClicked>Verdant.Window.Graph.on_welcome_ok()</OnClicked>
+            </Button>
+
+          </Controls>
+        </Control>
+
+      </Controls>
+    </TopLevelControl>
+
+    <TopLevelControl name="VerdantRecPanel" mouseEnabled="true" hidden="true" tier="HIGH">
+      <Dimensions x="344" y="96"/>
+      <Controls>
+        <Backdrop name="$(parent)Bg">
+          <AnchorFill/>
+        </Backdrop>
+      </Controls>
+    </TopLevelControl>
+
+  </Controls>
+</GuiXml>
