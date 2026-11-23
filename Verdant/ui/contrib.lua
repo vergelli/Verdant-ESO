@@ -1,4 +1,5 @@
 Verdant = Verdant or {}
+local Verdant = Verdant
 Verdant.ContribView = {}
 local M = Verdant.ContribView
 

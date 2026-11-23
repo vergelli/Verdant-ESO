@@ -1,8 +1,8 @@
 ## Title: Verdant
 ## Description: Real-time healer contribution tool — healing and shields, with skill-colour breakdown
 ## Author: Federico Vergelli
-## Version: 3.0.0
-## AddOnVersion: 12
+## Version: 3.0.1
+## AddOnVersion: 13
 ## APIVersion: 101052 101051
 ## SavedVariables: VerdantSavedVars
 

@@ -1,4 +1,5 @@
 Verdant = Verdant or {}
+local Verdant = Verdant
 Verdant.Assign = {}
 local M = Verdant.Assign
 

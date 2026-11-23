@@ -1,4 +1,5 @@
 Verdant = Verdant or {}
+local Verdant = Verdant
 Verdant.lib = Verdant.lib or {}
 Verdant.lib.themes = {}
 local M = Verdant.lib.themes

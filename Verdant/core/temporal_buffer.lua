@@ -1,4 +1,5 @@
 Verdant = Verdant or {}
+local Verdant = Verdant
 Verdant.TemporalBuffer = {}
 local M = Verdant.TemporalBuffer
 
