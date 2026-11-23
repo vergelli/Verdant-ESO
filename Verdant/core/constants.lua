@@ -3,7 +3,7 @@ local Verdant = Verdant
 
 Verdant.Constants = {
   ADDON_NAME    = "Verdant",
-  VERSION       = "3.0.1",
+  VERSION       = "3.0.2",
   SLASH_COMMAND = "/verdant",
 
   DEV           = false,
@@ -43,6 +43,7 @@ Verdant.Constants = {
       VerdantBuffWatch        = 211,
       Verdant_BuffOrigin      = 221,
       VerdantBuffCatalog      = 222,
+      VerdantBuffCatalogDone  = 223,
 
       Verdant_E_Death         = 302,
       Verdant_E_DeathGroup    = 303,
@@ -68,6 +69,7 @@ Verdant.Constants = {
       Verdant_E_CastBlock     = 418,
       Verdant_E_Energize      = 419,
       VerdantTemporalSample   = 421,
+      Verdant_ContentKind     = 431,
 
       VerdantAutosave         = 501,
 
@@ -117,6 +119,7 @@ Verdant.Constants = {
       Verdant_GroupLeft       = 940,
       Verdant_GroupUpdate     = 941,
       Verdant_PlayerActivated = 942,
+      Verdant_BuffProbe       = 951,
       Verdant_AutoSave        = 943,
     },
   },

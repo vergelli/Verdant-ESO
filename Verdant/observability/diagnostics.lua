@@ -64,9 +64,8 @@ local function ts_sample()
     grp_sz = Verdant.GroupSet and Verdant.GroupSet.size() or 0,
     metric = (function()
       if not Verdant.Metrics then return nil end
-      local ok, r = pcall(Verdant.Metrics.contribution, GetGameTimeMilliseconds())
-      if ok then return { eHPS=r.eHPS, MPS=r.MPS, EMS=r.EMS } end
-      return nil
+      local r = Verdant.Metrics.contribution(GetGameTimeMilliseconds())
+      return { eHPS=r.eHPS, MPS=r.MPS, EMS=r.EMS }
     end)(),
   }
   ts_head = (ts_head % TS_CAP) + 1

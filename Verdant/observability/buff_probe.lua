@@ -38,11 +38,16 @@ local function low(s) return string_lower(clean(s)) end
 local function clock() return api.GetGameTimeMilliseconds() end
 local function kb() return collectgarbage("count") end
 
+local FAIL = "Verdant_BuffProbe"
+
 local function timed(cost, key, fallback, fn, ...)
   local m0, t0 = kb(), clock()
   local fine, a, b = pcall(fn, ...)
   cost[key] = { ms = clock() - t0, kb = math_floor(kb() - m0 + 0.5), err = (not fine) and tostring(a) or nil }
-  if not fine then return fallback, 0 end
+  if not fine then
+    Verdant.zenimax.events.fail(FAIL, key .. ": " .. tostring(a))
+    return fallback, 0
+  end
   return a, b
 end
 

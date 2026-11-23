@@ -23,10 +23,26 @@ M.ICON = {
   world   = "EsoUI/Art/Icons/mapKey/mapKey_adventureZone.dds",
 }
 
+local FAIL = "Verdant_ContentKind"
+local told = false
+
+local function failed(err)
+  local zev = Verdant.zenimax.events
+  local line = nil
+  if not told then
+    told = true
+    line = string.format(Verdant.zenimax.api.GetString(VERDANT_CONTENT_KIND_FAILED), zev.error_label(FAIL))
+  end
+  zev.fail(FAIL, err, line)
+end
+
 local function call(fn, ...)
   if type(fn) ~= "function" then return nil end
   local ok, v = pcall(fn, ...)
-  if not ok then return nil end
+  if not ok then
+    failed(v)
+    return nil
+  end
   return v
 end
 

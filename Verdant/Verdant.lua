@@ -299,7 +299,6 @@ local function on_addon_loaded()
   SLASH_COMMANDS[C.SLASH_COMMAND] = Verdant.zenimax.events.guard(C.SLASH_COMMAND, on_slash)
 
   Log:info("loaded v" .. C.VERSION, "DEBUG=" .. tostring(C.DEBUG))
-  d("[V] " .. string_format(GetString(VERDANT_LOADED), C.VERSION, C.SLASH_COMMAND))
 end
 
 Verdant.zenimax.events.register_addon_loaded(Verdant.Constants.ADDON_NAME, on_addon_loaded)

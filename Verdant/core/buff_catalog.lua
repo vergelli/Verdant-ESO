@@ -10,6 +10,7 @@ local zev = Verdant.zenimax.events
 local string_find, string_gsub, string_lower, string_sub = string.find, string.gsub, string.lower, string.sub
 
 local TICK = "VerdantBuffCatalog"
+local DONE = "VerdantBuffCatalogDone"
 local SET_LIMIT = 5000
 local MAX_ANSWERS = 2048
 M.SETS_PER_STEP = 12
@@ -61,7 +62,7 @@ function M.answer(id)
 end
 
 function M.on_done(fn)
-  listeners[#listeners + 1] = fn
+  listeners[#listeners + 1] = zev.guard(DONE, fn)
 end
 
 function M.running() return job ~= nil end
@@ -172,8 +173,7 @@ local function finish()
   end
   Verdant.BuffOrigin.forget(ids)
   for i = 1, #listeners do
-    local ok, err = pcall(listeners[i], ids)
-    if not ok then zev.fail(TICK, err) end
+    listeners[i](ids)
   end
 end
 
